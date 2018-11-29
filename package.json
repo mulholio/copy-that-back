@@ -1,0 +1,14 @@
+{
+  "name": "copy-that-back",
+  "version": "0.0.0",
+  "description": "The backend for copy that",
+  "main": "index.ts",
+  "repository": "https://github.com/mulholio/copy-that-back",
+  "author": "James Mulholland <james@copythat.io>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "graphql-yoga": "^1.16.7",
+    "prisma-binding": "^2.2.8"
+  }
+}
