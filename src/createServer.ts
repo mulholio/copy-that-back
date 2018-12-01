@@ -3,28 +3,16 @@ import { GraphQLServer } from 'graphql-yoga';
 import Query from './resolvers/Query';
 import Mutation from './resolvers/Mutation';
 
-/*
-const typeDefs = `
-  type User {
-    id: ID!
-    name: String
-  }
-  type Query {
-    users: [User!]!
-  }
-  type Mutation {
-    createUser(name: String): User
-  }
-`;
-*/
+const toBool = v => v === 'true'
+  ? true
+  : v === 'false'
+    ? false
+    : undefined;
 
 function createServer() {
   return new GraphQLServer({
     typeDefs: './src/schema.graphql',
     resolvers: { Query, Mutation },
-    // resolverValidationOptions: {
-    //   requireResolversForResolveType: false,
-    // },
     context: (req) => ({
       ...req,
       db: new Prisma({
@@ -32,7 +20,7 @@ function createServer() {
         endpoint: process.env.PRIMSA_ENDPOINT,
         secret: process.env.PRISMA_SECRET,
         // TODO add this to .env
-        debug: false,
+        debug: toBool(process.env.DEBUG),
       }),
     }),
   });
