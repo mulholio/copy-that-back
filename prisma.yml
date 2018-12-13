@@ -1,4 +1,6 @@
-endpoint: ${env:PRISMA_ENDPOINT}
+#endpoint: ${env:PRISMA_ENDPOINT}
+#endpoint: https://eu1.prisma.sh/copy-that/copy-that-back/
+endpoint: https://eu1.prisma.sh/copy-that/copy_that_back/dev
 datamodel: datamodel.prisma
 # TODO secure this for production
 # secret: ${env:PRISMA_SECRET}

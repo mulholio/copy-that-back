@@ -1,4 +1,33 @@
 type User {
   id: ID! @unique
-  name: String!
+  username: String!
+  email: String! @unique
+  password: String!
+  thats: [That]
+  permissions: [Permission]
 }
+
+enum Permission {
+  ADMIN
+  USER
+}
+
+# TODO Difficulyt enum
+
+type That {
+  id: ID! @unique
+  title: String!
+  description: String!
+  source: String!
+  whyNotTry: String!
+  image: String!
+  largeImage: String!
+  submittedBy: User!
+  # tag: Tag
+  # skills: Skill
+  # difficulty: difficulyt enum
+}
+
+# Tag
+
+# Skill

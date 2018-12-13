@@ -19,7 +19,6 @@ function createServer() {
         typeDefs: './src/generated/prisma.graphql',
         endpoint: process.env.PRIMSA_ENDPOINT,
         secret: process.env.PRISMA_SECRET,
-        // TODO add this to .env
         debug: toBool(process.env.DEBUG),
       }),
     }),

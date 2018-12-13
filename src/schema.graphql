@@ -4,13 +4,31 @@
 
 type User {
   id: ID!
-  name: String
+  username: String!
+  email: String!
+  permissions: [Permission!]!
+  thats: [That]
+}
+
+type That {
+  title: String!
+  description: String!
+  source: String!
+  whyNotTry: String!
+  image: String!
+  largeImage: String!
+  user: User!
+  # tag: Tag
+  # skills: Skill
+  # difficulty: difficulyt enum
 }
 
 type Query {
   users: [User!]!
+  thats: [That]!
 }
 
 type Mutation {
-  createUser(name: String): User
+  createUser(username: String!, email: String!, password: String!): User
+  createThat(title: String!, description: String!, source: String!, whyNotTry: String!, image: String!, largeImage: String!): That!
 }
