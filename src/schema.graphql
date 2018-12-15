@@ -8,6 +8,7 @@ type User {
   email: String!
   permissions: [Permission!]!
   thats: [That]
+  # comments [Comment]
 }
 
 type That {
@@ -21,14 +22,23 @@ type That {
   # tag: Tag
   # skills: Skill
   # difficulty: difficulyt enum
+  # comments [Comment]
 }
+
+# type Comment
+# user: [User]!
+# That: That!
+# link - a link to repl.it that lets you embed solutions
+# text - Text response
 
 type Query {
   users: [User!]!
   thats: [That]!
+  # comments? - feel like you wouldn't need to do this outside the ctx of thats
 }
 
 type Mutation {
   createUser(username: String!, email: String!, password: String!): User
   createThat(title: String!, description: String!, source: String!, whyNotTry: String!, image: String!, largeImage: String!): That!
+  # createComment
 }
