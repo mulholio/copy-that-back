@@ -20,7 +20,8 @@
     "dotenv": "^6.1.0",
     "graphql-yoga": "^1.16.7",
     "prisma-binding": "^2.2.8",
-    "prisma-client-lib": "^1.21.1"
+    "prisma-client-lib": "^1.21.1",
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
     "nodemon": "^1.18.7",

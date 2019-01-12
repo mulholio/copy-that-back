@@ -2,6 +2,7 @@
 
 # import * from './generated/prisma.graphql'
 
+# Private fields must be hidden so we implement a new user here
 type User {
   id: ID!
   username: String!
@@ -11,34 +12,14 @@ type User {
   # comments [Comment]
 }
 
-type That {
-  title: String!
-  description: String!
-  source: String!
-  whyNotTry: String!
-  image: String!
-  largeImage: String!
-  user: User!
-  # tag: Tag
-  # skills: Skill
-  # difficulty: difficulyt enum
-  # comments [Comment]
-}
-
-# type Comment
-# user: [User]!
-# That: That!
-# link - a link to repl.it that lets you embed solutions
-# text - Text response
-
 type Query {
   users: [User!]!
   thats: [That]!
-  # comments? - feel like you wouldn't need to do this outside the ctx of thats
 }
 
 type Mutation {
   createUser(username: String!, email: String!, password: String!): User
-  createThat(title: String!, description: String!, source: String!, whyNotTry: String!, image: String!, largeImage: String!): That!
+  # TODO image
+  createThat(title: String!, description: String!, source: String!, tags: [String]!, skills: [String]!, difficulty: Difficulty!, ): That!
   # createComment
 }

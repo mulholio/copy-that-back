@@ -10,6 +10,8 @@ type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
+  skill: (where?: SkillWhereInput) => Promise<boolean>;
+  tag: (where?: TagWhereInput) => Promise<boolean>;
   that: (where?: ThatWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
@@ -33,6 +35,52 @@ export interface Prisma {
    * Queries
    */
 
+  skill: (where: SkillWhereUniqueInput) => SkillPromise;
+  skills: (
+    args?: {
+      where?: SkillWhereInput;
+      orderBy?: SkillOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Skill>;
+  skillsConnection: (
+    args?: {
+      where?: SkillWhereInput;
+      orderBy?: SkillOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => SkillConnectionPromise;
+  tag: (where: TagWhereUniqueInput) => TagPromise;
+  tags: (
+    args?: {
+      where?: TagWhereInput;
+      orderBy?: TagOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Tag>;
+  tagsConnection: (
+    args?: {
+      where?: TagWhereInput;
+      orderBy?: TagOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => TagConnectionPromise;
   that: (where: ThatWhereUniqueInput) => ThatPromise;
   thats: (
     args?: {
@@ -85,6 +133,38 @@ export interface Prisma {
    * Mutations
    */
 
+  createSkill: (data: SkillCreateInput) => SkillPromise;
+  updateSkill: (
+    args: { data: SkillUpdateInput; where: SkillWhereUniqueInput }
+  ) => SkillPromise;
+  updateManySkills: (
+    args: { data: SkillUpdateManyMutationInput; where?: SkillWhereInput }
+  ) => BatchPayloadPromise;
+  upsertSkill: (
+    args: {
+      where: SkillWhereUniqueInput;
+      create: SkillCreateInput;
+      update: SkillUpdateInput;
+    }
+  ) => SkillPromise;
+  deleteSkill: (where: SkillWhereUniqueInput) => SkillPromise;
+  deleteManySkills: (where?: SkillWhereInput) => BatchPayloadPromise;
+  createTag: (data: TagCreateInput) => TagPromise;
+  updateTag: (
+    args: { data: TagUpdateInput; where: TagWhereUniqueInput }
+  ) => TagPromise;
+  updateManyTags: (
+    args: { data: TagUpdateManyMutationInput; where?: TagWhereInput }
+  ) => BatchPayloadPromise;
+  upsertTag: (
+    args: {
+      where: TagWhereUniqueInput;
+      create: TagCreateInput;
+      update: TagUpdateInput;
+    }
+  ) => TagPromise;
+  deleteTag: (where: TagWhereUniqueInput) => TagPromise;
+  deleteManyTags: (where?: TagWhereInput) => BatchPayloadPromise;
   createThat: (data: ThatCreateInput) => ThatPromise;
   updateThat: (
     args: { data: ThatUpdateInput; where: ThatWhereUniqueInput }
@@ -126,6 +206,12 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  skill: (
+    where?: SkillSubscriptionWhereInput
+  ) => SkillSubscriptionPayloadSubscription;
+  tag: (
+    where?: TagSubscriptionWhereInput
+  ) => TagSubscriptionPayloadSubscription;
   that: (
     where?: ThatSubscriptionWhereInput
   ) => ThatSubscriptionPayloadSubscription;
@@ -142,6 +228,8 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type Difficulty = "EASY" | "MEDIUM" | "HARD";
+
 export type ThatOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -151,18 +239,34 @@ export type ThatOrderByInput =
   | "description_DESC"
   | "source_ASC"
   | "source_DESC"
-  | "whyNotTry_ASC"
-  | "whyNotTry_DESC"
-  | "image_ASC"
-  | "image_DESC"
-  | "largeImage_ASC"
-  | "largeImage_DESC"
+  | "difficulty_ASC"
+  | "difficulty_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
 export type Permission = "ADMIN" | "USER";
+
+export type TagOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type SkillOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -180,20 +284,159 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface UserUpdateOneRequiredWithoutThatsInput {
-  create?: UserCreateWithoutThatsInput;
-  update?: UserUpdateWithoutThatsDataInput;
-  upsert?: UserUpsertWithoutThatsInput;
-  connect?: UserWhereUniqueInput;
+export interface TagUpdateWithoutThatsDataInput {
+  name?: String;
 }
 
-export type ThatWhereUniqueInput = AtLeastOne<{
+export type SkillWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
+  name?: String;
 }>;
 
-export interface UserUpsertWithoutThatsInput {
-  update: UserUpdateWithoutThatsDataInput;
-  create: UserCreateWithoutThatsInput;
+export interface ThatUpsertWithWhereUniqueWithoutSkillsInput {
+  where: ThatWhereUniqueInput;
+  update: ThatUpdateWithoutSkillsDataInput;
+  create: ThatCreateWithoutSkillsInput;
+}
+
+export interface SkillWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  thats_every?: ThatWhereInput;
+  thats_some?: ThatWhereInput;
+  thats_none?: ThatWhereInput;
+  AND?: SkillWhereInput[] | SkillWhereInput;
+  OR?: SkillWhereInput[] | SkillWhereInput;
+  NOT?: SkillWhereInput[] | SkillWhereInput;
+}
+
+export interface ThatUpdateManyWithoutSkillsInput {
+  create?: ThatCreateWithoutSkillsInput[] | ThatCreateWithoutSkillsInput;
+  delete?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
+  connect?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
+  disconnect?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
+  update?:
+    | ThatUpdateWithWhereUniqueWithoutSkillsInput[]
+    | ThatUpdateWithWhereUniqueWithoutSkillsInput;
+  upsert?:
+    | ThatUpsertWithWhereUniqueWithoutSkillsInput[]
+    | ThatUpsertWithWhereUniqueWithoutSkillsInput;
+  deleteMany?: ThatScalarWhereInput[] | ThatScalarWhereInput;
+  updateMany?:
+    | ThatUpdateManyWithWhereNestedInput[]
+    | ThatUpdateManyWithWhereNestedInput;
+}
+
+export interface SkillUpsertWithWhereUniqueWithoutThatsInput {
+  where: SkillWhereUniqueInput;
+  update: SkillUpdateWithoutThatsDataInput;
+  create: SkillCreateWithoutThatsInput;
+}
+
+export interface ThatUpdateWithWhereUniqueWithoutSkillsInput {
+  where: ThatWhereUniqueInput;
+  data: ThatUpdateWithoutSkillsDataInput;
+}
+
+export interface ThatScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
+  source?: String;
+  source_not?: String;
+  source_in?: String[] | String;
+  source_not_in?: String[] | String;
+  source_lt?: String;
+  source_lte?: String;
+  source_gt?: String;
+  source_gte?: String;
+  source_contains?: String;
+  source_not_contains?: String;
+  source_starts_with?: String;
+  source_not_starts_with?: String;
+  source_ends_with?: String;
+  source_not_ends_with?: String;
+  difficulty?: Difficulty;
+  difficulty_not?: Difficulty;
+  difficulty_in?: Difficulty[] | Difficulty;
+  difficulty_not_in?: Difficulty[] | Difficulty;
+  AND?: ThatScalarWhereInput[] | ThatScalarWhereInput;
+  OR?: ThatScalarWhereInput[] | ThatScalarWhereInput;
+  NOT?: ThatScalarWhereInput[] | ThatScalarWhereInput;
+}
+
+export interface ThatUpdateWithoutSkillsDataInput {
+  title?: String;
+  description?: String;
+  source?: String;
+  user?: UserUpdateOneRequiredWithoutThatsInput;
+  tags?: TagUpdateManyWithoutThatsInput;
+  difficulty?: Difficulty;
 }
 
 export interface UserWhereInput {
@@ -261,163 +504,11 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface ThatCreateInput {
-  title: String;
-  description: String;
-  source: String;
-  whyNotTry: String;
-  image: String;
-  largeImage: String;
-  submittedBy: UserCreateOneWithoutThatsInput;
-}
-
-export interface UserCreateInput {
-  username: String;
-  email: String;
-  password: String;
-  thats?: ThatCreateManyWithoutSubmittedByInput;
-  permissions?: UserCreatepermissionsInput;
-}
-
-export interface UserCreateOneWithoutThatsInput {
+export interface UserUpdateOneRequiredWithoutThatsInput {
   create?: UserCreateWithoutThatsInput;
+  update?: UserUpdateWithoutThatsDataInput;
+  upsert?: UserUpsertWithoutThatsInput;
   connect?: UserWhereUniqueInput;
-}
-
-export interface ThatUpdateManyMutationInput {
-  title?: String;
-  description?: String;
-  source?: String;
-  whyNotTry?: String;
-  image?: String;
-  largeImage?: String;
-}
-
-export interface UserCreateWithoutThatsInput {
-  username: String;
-  email: String;
-  password: String;
-  permissions?: UserCreatepermissionsInput;
-}
-
-export interface ThatSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ThatWhereInput;
-  AND?: ThatSubscriptionWhereInput[] | ThatSubscriptionWhereInput;
-  OR?: ThatSubscriptionWhereInput[] | ThatSubscriptionWhereInput;
-  NOT?: ThatSubscriptionWhereInput[] | ThatSubscriptionWhereInput;
-}
-
-export interface UserCreatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export interface ThatUpdateManyDataInput {
-  title?: String;
-  description?: String;
-  source?: String;
-  whyNotTry?: String;
-  image?: String;
-  largeImage?: String;
-}
-
-export interface ThatUpdateInput {
-  title?: String;
-  description?: String;
-  source?: String;
-  whyNotTry?: String;
-  image?: String;
-  largeImage?: String;
-  submittedBy?: UserUpdateOneRequiredWithoutThatsInput;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  email?: String;
-}>;
-
-export interface ThatUpdateManyWithoutSubmittedByInput {
-  create?:
-    | ThatCreateWithoutSubmittedByInput[]
-    | ThatCreateWithoutSubmittedByInput;
-  delete?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
-  connect?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
-  disconnect?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
-  update?:
-    | ThatUpdateWithWhereUniqueWithoutSubmittedByInput[]
-    | ThatUpdateWithWhereUniqueWithoutSubmittedByInput;
-  upsert?:
-    | ThatUpsertWithWhereUniqueWithoutSubmittedByInput[]
-    | ThatUpsertWithWhereUniqueWithoutSubmittedByInput;
-  deleteMany?: ThatScalarWhereInput[] | ThatScalarWhereInput;
-  updateMany?:
-    | ThatUpdateManyWithWhereNestedInput[]
-    | ThatUpdateManyWithWhereNestedInput;
-}
-
-export interface ThatUpsertWithWhereUniqueWithoutSubmittedByInput {
-  where: ThatWhereUniqueInput;
-  update: ThatUpdateWithoutSubmittedByDataInput;
-  create: ThatCreateWithoutSubmittedByInput;
-}
-
-export interface UserUpdateWithoutThatsDataInput {
-  username?: String;
-  email?: String;
-  password?: String;
-  permissions?: UserUpdatepermissionsInput;
-}
-
-export interface ThatUpdateWithWhereUniqueWithoutSubmittedByInput {
-  where: ThatWhereUniqueInput;
-  data: ThatUpdateWithoutSubmittedByDataInput;
-}
-
-export interface UserUpdatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: UserWhereInput;
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
-}
-
-export interface ThatUpdateManyWithWhereNestedInput {
-  where: ThatScalarWhereInput;
-  data: ThatUpdateManyDataInput;
-}
-
-export interface ThatCreateManyWithoutSubmittedByInput {
-  create?:
-    | ThatCreateWithoutSubmittedByInput[]
-    | ThatCreateWithoutSubmittedByInput;
-  connect?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
-}
-
-export interface ThatCreateWithoutSubmittedByInput {
-  title: String;
-  description: String;
-  source: String;
-  whyNotTry: String;
-  image: String;
-  largeImage: String;
-}
-
-export interface UserUpdateInput {
-  username?: String;
-  email?: String;
-  password?: String;
-  thats?: ThatUpdateManyWithoutSubmittedByInput;
-  permissions?: UserUpdatepermissionsInput;
 }
 
 export interface ThatWhereInput {
@@ -477,55 +568,118 @@ export interface ThatWhereInput {
   source_not_starts_with?: String;
   source_ends_with?: String;
   source_not_ends_with?: String;
-  whyNotTry?: String;
-  whyNotTry_not?: String;
-  whyNotTry_in?: String[] | String;
-  whyNotTry_not_in?: String[] | String;
-  whyNotTry_lt?: String;
-  whyNotTry_lte?: String;
-  whyNotTry_gt?: String;
-  whyNotTry_gte?: String;
-  whyNotTry_contains?: String;
-  whyNotTry_not_contains?: String;
-  whyNotTry_starts_with?: String;
-  whyNotTry_not_starts_with?: String;
-  whyNotTry_ends_with?: String;
-  whyNotTry_not_ends_with?: String;
-  image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
-  largeImage?: String;
-  largeImage_not?: String;
-  largeImage_in?: String[] | String;
-  largeImage_not_in?: String[] | String;
-  largeImage_lt?: String;
-  largeImage_lte?: String;
-  largeImage_gt?: String;
-  largeImage_gte?: String;
-  largeImage_contains?: String;
-  largeImage_not_contains?: String;
-  largeImage_starts_with?: String;
-  largeImage_not_starts_with?: String;
-  largeImage_ends_with?: String;
-  largeImage_not_ends_with?: String;
-  submittedBy?: UserWhereInput;
+  user?: UserWhereInput;
+  tags_every?: TagWhereInput;
+  tags_some?: TagWhereInput;
+  tags_none?: TagWhereInput;
+  skills_every?: SkillWhereInput;
+  skills_some?: SkillWhereInput;
+  skills_none?: SkillWhereInput;
+  difficulty?: Difficulty;
+  difficulty_not?: Difficulty;
+  difficulty_in?: Difficulty[] | Difficulty;
+  difficulty_not_in?: Difficulty[] | Difficulty;
   AND?: ThatWhereInput[] | ThatWhereInput;
   OR?: ThatWhereInput[] | ThatWhereInput;
   NOT?: ThatWhereInput[] | ThatWhereInput;
 }
 
-export interface ThatScalarWhereInput {
+export interface UserUpdateWithoutThatsDataInput {
+  username?: String;
+  email?: String;
+  password?: String;
+  permissions?: UserUpdatepermissionsInput;
+}
+
+export interface TagSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: TagWhereInput;
+  AND?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+  OR?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+  NOT?: TagSubscriptionWhereInput[] | TagSubscriptionWhereInput;
+}
+
+export interface UserUpdatepermissionsInput {
+  set?: Permission[] | Permission;
+}
+
+export interface UserUpdateManyMutationInput {
+  username?: String;
+  email?: String;
+  password?: String;
+  permissions?: UserUpdatepermissionsInput;
+}
+
+export interface UserUpsertWithoutThatsInput {
+  update: UserUpdateWithoutThatsDataInput;
+  create: UserCreateWithoutThatsInput;
+}
+
+export type TagWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  name?: String;
+}>;
+
+export interface TagUpdateManyWithoutThatsInput {
+  create?: TagCreateWithoutThatsInput[] | TagCreateWithoutThatsInput;
+  delete?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  disconnect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+  update?:
+    | TagUpdateWithWhereUniqueWithoutThatsInput[]
+    | TagUpdateWithWhereUniqueWithoutThatsInput;
+  upsert?:
+    | TagUpsertWithWhereUniqueWithoutThatsInput[]
+    | TagUpsertWithWhereUniqueWithoutThatsInput;
+  deleteMany?: TagScalarWhereInput[] | TagScalarWhereInput;
+  updateMany?:
+    | TagUpdateManyWithWhereNestedInput[]
+    | TagUpdateManyWithWhereNestedInput;
+}
+
+export interface ThatUpdateWithWhereUniqueWithoutUserInput {
+  where: ThatWhereUniqueInput;
+  data: ThatUpdateWithoutUserDataInput;
+}
+
+export interface TagUpdateWithWhereUniqueWithoutThatsInput {
+  where: TagWhereUniqueInput;
+  data: TagUpdateWithoutThatsDataInput;
+}
+
+export type ThatWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface TagUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface ThatCreateWithoutUserInput {
+  title: String;
+  description: String;
+  source: String;
+  tags?: TagCreateManyWithoutThatsInput;
+  skills?: SkillCreateManyWithoutThatsInput;
+  difficulty?: Difficulty;
+}
+
+export interface TagUpsertWithWhereUniqueWithoutThatsInput {
+  where: TagWhereUniqueInput;
+  update: TagUpdateWithoutThatsDataInput;
+  create: TagCreateWithoutThatsInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  username?: String;
+  email?: String;
+}>;
+
+export interface TagScalarWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -540,109 +694,386 @@ export interface ThatScalarWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  title?: String;
-  title_not?: String;
-  title_in?: String[] | String;
-  title_not_in?: String[] | String;
-  title_lt?: String;
-  title_lte?: String;
-  title_gt?: String;
-  title_gte?: String;
-  title_contains?: String;
-  title_not_contains?: String;
-  title_starts_with?: String;
-  title_not_starts_with?: String;
-  title_ends_with?: String;
-  title_not_ends_with?: String;
-  description?: String;
-  description_not?: String;
-  description_in?: String[] | String;
-  description_not_in?: String[] | String;
-  description_lt?: String;
-  description_lte?: String;
-  description_gt?: String;
-  description_gte?: String;
-  description_contains?: String;
-  description_not_contains?: String;
-  description_starts_with?: String;
-  description_not_starts_with?: String;
-  description_ends_with?: String;
-  description_not_ends_with?: String;
-  source?: String;
-  source_not?: String;
-  source_in?: String[] | String;
-  source_not_in?: String[] | String;
-  source_lt?: String;
-  source_lte?: String;
-  source_gt?: String;
-  source_gte?: String;
-  source_contains?: String;
-  source_not_contains?: String;
-  source_starts_with?: String;
-  source_not_starts_with?: String;
-  source_ends_with?: String;
-  source_not_ends_with?: String;
-  whyNotTry?: String;
-  whyNotTry_not?: String;
-  whyNotTry_in?: String[] | String;
-  whyNotTry_not_in?: String[] | String;
-  whyNotTry_lt?: String;
-  whyNotTry_lte?: String;
-  whyNotTry_gt?: String;
-  whyNotTry_gte?: String;
-  whyNotTry_contains?: String;
-  whyNotTry_not_contains?: String;
-  whyNotTry_starts_with?: String;
-  whyNotTry_not_starts_with?: String;
-  whyNotTry_ends_with?: String;
-  whyNotTry_not_ends_with?: String;
-  image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
-  largeImage?: String;
-  largeImage_not?: String;
-  largeImage_in?: String[] | String;
-  largeImage_not_in?: String[] | String;
-  largeImage_lt?: String;
-  largeImage_lte?: String;
-  largeImage_gt?: String;
-  largeImage_gte?: String;
-  largeImage_contains?: String;
-  largeImage_not_contains?: String;
-  largeImage_starts_with?: String;
-  largeImage_not_starts_with?: String;
-  largeImage_ends_with?: String;
-  largeImage_not_ends_with?: String;
-  AND?: ThatScalarWhereInput[] | ThatScalarWhereInput;
-  OR?: ThatScalarWhereInput[] | ThatScalarWhereInput;
-  NOT?: ThatScalarWhereInput[] | ThatScalarWhereInput;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: TagScalarWhereInput[] | TagScalarWhereInput;
+  OR?: TagScalarWhereInput[] | TagScalarWhereInput;
+  NOT?: TagScalarWhereInput[] | TagScalarWhereInput;
 }
 
-export interface UserUpdateManyMutationInput {
+export interface ThatUpdateManyMutationInput {
+  title?: String;
+  description?: String;
+  source?: String;
+  difficulty?: Difficulty;
+}
+
+export interface TagUpdateManyWithWhereNestedInput {
+  where: TagScalarWhereInput;
+  data: TagUpdateManyDataInput;
+}
+
+export interface ThatCreateInput {
+  title: String;
+  description: String;
+  source: String;
+  user: UserCreateOneWithoutThatsInput;
+  tags?: TagCreateManyWithoutThatsInput;
+  skills?: SkillCreateManyWithoutThatsInput;
+  difficulty?: Difficulty;
+}
+
+export interface TagUpdateManyDataInput {
+  name?: String;
+}
+
+export interface SkillCreateInput {
+  name: String;
+  thats?: ThatCreateManyWithoutSkillsInput;
+}
+
+export interface ThatUpsertWithWhereUniqueWithoutTagsInput {
+  where: ThatWhereUniqueInput;
+  update: ThatUpdateWithoutTagsDataInput;
+  create: ThatCreateWithoutTagsInput;
+}
+
+export interface ThatCreateWithoutSkillsInput {
+  title: String;
+  description: String;
+  source: String;
+  user: UserCreateOneWithoutThatsInput;
+  tags?: TagCreateManyWithoutThatsInput;
+  difficulty?: Difficulty;
+}
+
+export interface SkillUpdateManyDataInput {
+  name?: String;
+}
+
+export interface UserCreateWithoutThatsInput {
+  username: String;
+  email: String;
+  password: String;
+  permissions?: UserCreatepermissionsInput;
+}
+
+export interface ThatUpdateManyWithWhereNestedInput {
+  where: ThatScalarWhereInput;
+  data: ThatUpdateManyDataInput;
+}
+
+export interface TagCreateManyWithoutThatsInput {
+  create?: TagCreateWithoutThatsInput[] | TagCreateWithoutThatsInput;
+  connect?: TagWhereUniqueInput[] | TagWhereUniqueInput;
+}
+
+export interface ThatUpdateManyDataInput {
+  title?: String;
+  description?: String;
+  source?: String;
+  difficulty?: Difficulty;
+}
+
+export interface SkillUpdateInput {
+  name?: String;
+  thats?: ThatUpdateManyWithoutSkillsInput;
+}
+
+export interface SkillUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: UserWhereInput;
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+  NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
+}
+
+export interface SkillUpdateManyWithWhereNestedInput {
+  where: SkillScalarWhereInput;
+  data: SkillUpdateManyDataInput;
+}
+
+export interface SkillSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: SkillWhereInput;
+  AND?: SkillSubscriptionWhereInput[] | SkillSubscriptionWhereInput;
+  OR?: SkillSubscriptionWhereInput[] | SkillSubscriptionWhereInput;
+  NOT?: SkillSubscriptionWhereInput[] | SkillSubscriptionWhereInput;
+}
+
+export interface SkillScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: SkillScalarWhereInput[] | SkillScalarWhereInput;
+  OR?: SkillScalarWhereInput[] | SkillScalarWhereInput;
+  NOT?: SkillScalarWhereInput[] | SkillScalarWhereInput;
+}
+
+export interface ThatUpdateWithoutUserDataInput {
+  title?: String;
+  description?: String;
+  source?: String;
+  tags?: TagUpdateManyWithoutThatsInput;
+  skills?: SkillUpdateManyWithoutThatsInput;
+  difficulty?: Difficulty;
+}
+
+export interface TagCreateInput {
+  name: String;
+  thats?: ThatCreateManyWithoutTagsInput;
+}
+
+export interface UserUpdateInput {
   username?: String;
   email?: String;
   password?: String;
+  thats?: ThatUpdateManyWithoutUserInput;
   permissions?: UserUpdatepermissionsInput;
 }
 
-export interface ThatUpdateWithoutSubmittedByDataInput {
+export interface ThatCreateManyWithoutTagsInput {
+  create?: ThatCreateWithoutTagsInput[] | ThatCreateWithoutTagsInput;
+  connect?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
+}
+
+export interface UserCreateInput {
+  username: String;
+  email: String;
+  password: String;
+  thats?: ThatCreateManyWithoutUserInput;
+  permissions?: UserCreatepermissionsInput;
+}
+
+export interface ThatCreateWithoutTagsInput {
+  title: String;
+  description: String;
+  source: String;
+  user: UserCreateOneWithoutThatsInput;
+  skills?: SkillCreateManyWithoutThatsInput;
+  difficulty?: Difficulty;
+}
+
+export interface UserCreateOneWithoutThatsInput {
+  create?: UserCreateWithoutThatsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface SkillCreateManyWithoutThatsInput {
+  create?: SkillCreateWithoutThatsInput[] | SkillCreateWithoutThatsInput;
+  connect?: SkillWhereUniqueInput[] | SkillWhereUniqueInput;
+}
+
+export interface TagCreateWithoutThatsInput {
+  name: String;
+}
+
+export interface SkillCreateWithoutThatsInput {
+  name: String;
+}
+
+export interface ThatSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ThatWhereInput;
+  AND?: ThatSubscriptionWhereInput[] | ThatSubscriptionWhereInput;
+  OR?: ThatSubscriptionWhereInput[] | ThatSubscriptionWhereInput;
+  NOT?: ThatSubscriptionWhereInput[] | ThatSubscriptionWhereInput;
+}
+
+export interface TagUpdateInput {
+  name?: String;
+  thats?: ThatUpdateManyWithoutTagsInput;
+}
+
+export interface ThatUpdateManyWithoutUserInput {
+  create?: ThatCreateWithoutUserInput[] | ThatCreateWithoutUserInput;
+  delete?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
+  connect?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
+  disconnect?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
+  update?:
+    | ThatUpdateWithWhereUniqueWithoutUserInput[]
+    | ThatUpdateWithWhereUniqueWithoutUserInput;
+  upsert?:
+    | ThatUpsertWithWhereUniqueWithoutUserInput[]
+    | ThatUpsertWithWhereUniqueWithoutUserInput;
+  deleteMany?: ThatScalarWhereInput[] | ThatScalarWhereInput;
+  updateMany?:
+    | ThatUpdateManyWithWhereNestedInput[]
+    | ThatUpdateManyWithWhereNestedInput;
+}
+
+export interface ThatUpdateManyWithoutTagsInput {
+  create?: ThatCreateWithoutTagsInput[] | ThatCreateWithoutTagsInput;
+  delete?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
+  connect?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
+  disconnect?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
+  update?:
+    | ThatUpdateWithWhereUniqueWithoutTagsInput[]
+    | ThatUpdateWithWhereUniqueWithoutTagsInput;
+  upsert?:
+    | ThatUpsertWithWhereUniqueWithoutTagsInput[]
+    | ThatUpsertWithWhereUniqueWithoutTagsInput;
+  deleteMany?: ThatScalarWhereInput[] | ThatScalarWhereInput;
+  updateMany?:
+    | ThatUpdateManyWithWhereNestedInput[]
+    | ThatUpdateManyWithWhereNestedInput;
+}
+
+export interface ThatUpdateInput {
   title?: String;
   description?: String;
   source?: String;
-  whyNotTry?: String;
-  image?: String;
-  largeImage?: String;
+  user?: UserUpdateOneRequiredWithoutThatsInput;
+  tags?: TagUpdateManyWithoutThatsInput;
+  skills?: SkillUpdateManyWithoutThatsInput;
+  difficulty?: Difficulty;
+}
+
+export interface ThatUpdateWithWhereUniqueWithoutTagsInput {
+  where: ThatWhereUniqueInput;
+  data: ThatUpdateWithoutTagsDataInput;
+}
+
+export interface UserCreatepermissionsInput {
+  set?: Permission[] | Permission;
+}
+
+export interface SkillUpdateWithoutThatsDataInput {
+  name?: String;
+}
+
+export interface SkillUpdateWithWhereUniqueWithoutThatsInput {
+  where: SkillWhereUniqueInput;
+  data: SkillUpdateWithoutThatsDataInput;
+}
+
+export interface SkillUpdateManyWithoutThatsInput {
+  create?: SkillCreateWithoutThatsInput[] | SkillCreateWithoutThatsInput;
+  delete?: SkillWhereUniqueInput[] | SkillWhereUniqueInput;
+  connect?: SkillWhereUniqueInput[] | SkillWhereUniqueInput;
+  disconnect?: SkillWhereUniqueInput[] | SkillWhereUniqueInput;
+  update?:
+    | SkillUpdateWithWhereUniqueWithoutThatsInput[]
+    | SkillUpdateWithWhereUniqueWithoutThatsInput;
+  upsert?:
+    | SkillUpsertWithWhereUniqueWithoutThatsInput[]
+    | SkillUpsertWithWhereUniqueWithoutThatsInput;
+  deleteMany?: SkillScalarWhereInput[] | SkillScalarWhereInput;
+  updateMany?:
+    | SkillUpdateManyWithWhereNestedInput[]
+    | SkillUpdateManyWithWhereNestedInput;
+}
+
+export interface ThatUpdateWithoutTagsDataInput {
+  title?: String;
+  description?: String;
+  source?: String;
+  user?: UserUpdateOneRequiredWithoutThatsInput;
+  skills?: SkillUpdateManyWithoutThatsInput;
+  difficulty?: Difficulty;
+}
+
+export interface TagWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  thats_every?: ThatWhereInput;
+  thats_some?: ThatWhereInput;
+  thats_none?: ThatWhereInput;
+  AND?: TagWhereInput[] | TagWhereInput;
+  OR?: TagWhereInput[] | TagWhereInput;
+  NOT?: TagWhereInput[] | TagWhereInput;
+}
+
+export interface ThatCreateManyWithoutSkillsInput {
+  create?: ThatCreateWithoutSkillsInput[] | ThatCreateWithoutSkillsInput;
+  connect?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
+}
+
+export interface ThatCreateManyWithoutUserInput {
+  create?: ThatCreateWithoutUserInput[] | ThatCreateWithoutUserInput;
+  connect?: ThatWhereUniqueInput[] | ThatWhereUniqueInput;
+}
+
+export interface ThatUpsertWithWhereUniqueWithoutUserInput {
+  where: ThatWhereUniqueInput;
+  update: ThatUpdateWithoutUserDataInput;
+  create: ThatCreateWithoutUserInput;
 }
 
 export interface NodeNode {
@@ -677,100 +1108,20 @@ export interface UserPreviousValuesSubscription
   permissions: () => Promise<AsyncIterator<Permission[]>>;
 }
 
-export interface ThatConnection {}
-
-export interface ThatConnectionPromise
-  extends Promise<ThatConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ThatEdge>>() => T;
-  aggregate: <T = AggregateThatPromise>() => T;
-}
-
-export interface ThatConnectionSubscription
-  extends Promise<AsyncIterator<ThatConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ThatEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateThatSubscription>() => T;
-}
-
-export interface ThatSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface ThatSubscriptionPayloadPromise
-  extends Promise<ThatSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ThatPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ThatPreviousValuesPromise>() => T;
-}
-
-export interface ThatSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ThatSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ThatSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ThatPreviousValuesSubscription>() => T;
-}
-
-export interface AggregateThat {
+export interface AggregateSkill {
   count: Int;
 }
 
-export interface AggregateThatPromise
-  extends Promise<AggregateThat>,
+export interface AggregateSkillPromise
+  extends Promise<AggregateSkill>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateThatSubscription
-  extends Promise<AsyncIterator<AggregateThat>>,
+export interface AggregateSkillSubscription
+  extends Promise<AsyncIterator<AggregateSkill>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ThatEdge {
-  cursor: String;
-}
-
-export interface ThatEdgePromise extends Promise<ThatEdge>, Fragmentable {
-  node: <T = ThatPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ThatEdgeSubscription
-  extends Promise<AsyncIterator<ThatEdge>>,
-    Fragmentable {
-  node: <T = ThatSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
 export interface That {
@@ -778,9 +1129,7 @@ export interface That {
   title: String;
   description: String;
   source: String;
-  whyNotTry: String;
-  image: String;
-  largeImage: String;
+  difficulty?: Difficulty;
 }
 
 export interface ThatPromise extends Promise<That>, Fragmentable {
@@ -788,10 +1137,30 @@ export interface ThatPromise extends Promise<That>, Fragmentable {
   title: () => Promise<String>;
   description: () => Promise<String>;
   source: () => Promise<String>;
-  whyNotTry: () => Promise<String>;
-  image: () => Promise<String>;
-  largeImage: () => Promise<String>;
-  submittedBy: <T = UserPromise>() => T;
+  user: <T = UserPromise>() => T;
+  tags: <T = FragmentableArray<Tag>>(
+    args?: {
+      where?: TagWhereInput;
+      orderBy?: TagOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  skills: <T = FragmentableArray<Skill>>(
+    args?: {
+      where?: SkillWhereInput;
+      orderBy?: SkillOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  difficulty: () => Promise<Difficulty>;
 }
 
 export interface ThatSubscription
@@ -801,99 +1170,46 @@ export interface ThatSubscription
   title: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
   source: () => Promise<AsyncIterator<String>>;
-  whyNotTry: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
-  largeImage: () => Promise<AsyncIterator<String>>;
-  submittedBy: <T = UserSubscription>() => T;
+  user: <T = UserSubscription>() => T;
+  tags: <T = Promise<AsyncIterator<TagSubscription>>>(
+    args?: {
+      where?: TagWhereInput;
+      orderBy?: TagOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  skills: <T = Promise<AsyncIterator<SkillSubscription>>>(
+    args?: {
+      where?: SkillWhereInput;
+      orderBy?: SkillOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+  difficulty: () => Promise<AsyncIterator<Difficulty>>;
 }
 
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
+export interface SkillEdge {
+  cursor: String;
 }
 
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
+export interface SkillEdgePromise extends Promise<SkillEdge>, Fragmentable {
+  node: <T = SkillPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
+export interface SkillEdgeSubscription
+  extends Promise<AsyncIterator<SkillEdge>>,
     Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ThatPreviousValues {
-  id: ID_Output;
-  title: String;
-  description: String;
-  source: String;
-  whyNotTry: String;
-  image: String;
-  largeImage: String;
-}
-
-export interface ThatPreviousValuesPromise
-  extends Promise<ThatPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  title: () => Promise<String>;
-  description: () => Promise<String>;
-  source: () => Promise<String>;
-  whyNotTry: () => Promise<String>;
-  image: () => Promise<String>;
-  largeImage: () => Promise<String>;
-}
-
-export interface ThatPreviousValuesSubscription
-  extends Promise<AsyncIterator<ThatPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  title: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  source: () => Promise<AsyncIterator<String>>;
-  whyNotTry: () => Promise<AsyncIterator<String>>;
-  image: () => Promise<AsyncIterator<String>>;
-  largeImage: () => Promise<AsyncIterator<String>>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  node: <T = SkillSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface User {
@@ -944,6 +1260,73 @@ export interface UserSubscription
   permissions: () => Promise<AsyncIterator<Permission[]>>;
 }
 
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface ThatPreviousValues {
+  id: ID_Output;
+  title: String;
+  description: String;
+  source: String;
+  difficulty?: Difficulty;
+}
+
+export interface ThatPreviousValuesPromise
+  extends Promise<ThatPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  title: () => Promise<String>;
+  description: () => Promise<String>;
+  source: () => Promise<String>;
+  difficulty: () => Promise<Difficulty>;
+}
+
+export interface ThatPreviousValuesSubscription
+  extends Promise<AsyncIterator<ThatPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  title: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  source: () => Promise<AsyncIterator<String>>;
+  difficulty: () => Promise<AsyncIterator<Difficulty>>;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface UserConnection {}
 
 export interface UserConnectionPromise
@@ -962,6 +1345,259 @@ export interface UserConnectionSubscription
   aggregate: <T = AggregateUserSubscription>() => T;
 }
 
+export interface Tag {
+  id: ID_Output;
+  name: String;
+}
+
+export interface TagPromise extends Promise<Tag>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  thats: <T = FragmentableArray<That>>(
+    args?: {
+      where?: ThatWhereInput;
+      orderBy?: ThatOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface TagSubscription
+  extends Promise<AsyncIterator<Tag>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  thats: <T = Promise<AsyncIterator<ThatSubscription>>>(
+    args?: {
+      where?: ThatWhereInput;
+      orderBy?: ThatOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface AggregateThat {
+  count: Int;
+}
+
+export interface AggregateThatPromise
+  extends Promise<AggregateThat>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateThatSubscription
+  extends Promise<AsyncIterator<AggregateThat>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface SkillSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface SkillSubscriptionPayloadPromise
+  extends Promise<SkillSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SkillPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SkillPreviousValuesPromise>() => T;
+}
+
+export interface SkillSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SkillSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SkillSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SkillPreviousValuesSubscription>() => T;
+}
+
+export interface ThatConnection {}
+
+export interface ThatConnectionPromise
+  extends Promise<ThatConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ThatEdge>>() => T;
+  aggregate: <T = AggregateThatPromise>() => T;
+}
+
+export interface ThatConnectionSubscription
+  extends Promise<AsyncIterator<ThatConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ThatEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateThatSubscription>() => T;
+}
+
+export interface SkillPreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface SkillPreviousValuesPromise
+  extends Promise<SkillPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface SkillPreviousValuesSubscription
+  extends Promise<AsyncIterator<SkillPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface TagEdge {
+  cursor: String;
+}
+
+export interface TagEdgePromise extends Promise<TagEdge>, Fragmentable {
+  node: <T = TagPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface TagEdgeSubscription
+  extends Promise<AsyncIterator<TagEdge>>,
+    Fragmentable {
+  node: <T = TagSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface ThatSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface ThatSubscriptionPayloadPromise
+  extends Promise<ThatSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ThatPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ThatPreviousValuesPromise>() => T;
+}
+
+export interface ThatSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ThatSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ThatSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ThatPreviousValuesSubscription>() => T;
+}
+
+export interface SkillConnection {}
+
+export interface SkillConnectionPromise
+  extends Promise<SkillConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SkillEdge>>() => T;
+  aggregate: <T = AggregateSkillPromise>() => T;
+}
+
+export interface SkillConnectionSubscription
+  extends Promise<AsyncIterator<SkillConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SkillEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSkillSubscription>() => T;
+}
+
+export interface TagPreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface TagPreviousValuesPromise
+  extends Promise<TagPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface TagPreviousValuesSubscription
+  extends Promise<AsyncIterator<TagPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface TagSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface TagSubscriptionPayloadPromise
+  extends Promise<TagSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = TagPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = TagPreviousValuesPromise>() => T;
+}
+
+export interface TagSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<TagSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = TagSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = TagPreviousValuesSubscription>() => T;
+}
+
 export interface UserEdge {
   cursor: String;
 }
@@ -978,10 +1614,99 @@ export interface UserEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
+export interface TagConnection {}
+
+export interface TagConnectionPromise
+  extends Promise<TagConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<TagEdge>>() => T;
+  aggregate: <T = AggregateTagPromise>() => T;
+}
+
+export interface TagConnectionSubscription
+  extends Promise<AsyncIterator<TagConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<TagEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateTagSubscription>() => T;
+}
+
+export interface AggregateTag {
+  count: Int;
+}
+
+export interface AggregateTagPromise
+  extends Promise<AggregateTag>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateTagSubscription
+  extends Promise<AsyncIterator<AggregateTag>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ThatEdge {
+  cursor: String;
+}
+
+export interface ThatEdgePromise extends Promise<ThatEdge>, Fragmentable {
+  node: <T = ThatPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ThatEdgeSubscription
+  extends Promise<AsyncIterator<ThatEdge>>,
+    Fragmentable {
+  node: <T = ThatSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Skill {
+  id: ID_Output;
+  name: String;
+}
+
+export interface SkillPromise extends Promise<Skill>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  thats: <T = FragmentableArray<That>>(
+    args?: {
+      where?: ThatWhereInput;
+      orderBy?: ThatOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
+export interface SkillSubscription
+  extends Promise<AsyncIterator<Skill>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  thats: <T = Promise<AsyncIterator<ThatSubscription>>>(
+    args?: {
+      where?: ThatWhereInput;
+      orderBy?: ThatOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => T;
+}
+
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+The `Boolean` scalar type represents `true` or `false`.
 */
-export type Int = number;
+export type Boolean = boolean;
 
 export type Long = string;
 
@@ -992,14 +1717,14 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+*/
+export type Int = number;
+
+/*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
 
 /**
  * Model Metadata
@@ -1007,7 +1732,19 @@ export type Boolean = boolean;
 
 export const models = [
   {
+    name: "Difficulty",
+    embedded: false
+  },
+  {
     name: "Permission",
+    embedded: false
+  },
+  {
+    name: "Skill",
+    embedded: false
+  },
+  {
+    name: "Tag",
     embedded: false
   },
   {
