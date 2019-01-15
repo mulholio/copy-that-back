@@ -10,6 +10,7 @@ const options = {
     credentials: true,
     origin: process.env.FRONT_END_URL,
   },
+  playground: '/play',
 };
 
 server.start(

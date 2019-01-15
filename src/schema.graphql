@@ -15,6 +15,7 @@ type User {
 type Query {
   users: [User!]!
   thats: [That]!
+  that(where: ThatWhereUniqueInput!): That
 }
 
 type Mutation {
