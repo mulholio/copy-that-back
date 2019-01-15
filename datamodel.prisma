@@ -23,8 +23,8 @@ type That {
   title: String!
   description: String!
   source: String!
-  # image: String!
-  # largeImage: String!
+  image: String!
+  largeImage: String!
   user: User!
   tags: [Tag]!
   skills: [Skill]!

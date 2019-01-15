@@ -39,6 +39,7 @@ const Mutation = {
           )),
         },
       });
+      console.log('existingItems: ', existingItems);
 
       const existingItemNames: string[] = existingItems
         .map(({ name }) => name);
@@ -52,11 +53,7 @@ const Mutation = {
       console.log(`existing ${itemType}s: `, existingItemNames);
       console.log(`non-existing ${itemType}s: `, nonExistingItemNames);
 
-      interface TagNameObject {
-        name: string
-      }
-
-      const nameObjects = (names: string[]): TagNameObject[] =>
+      const nameObjects = (names: string[]): NameJoin[] =>
         names.map(name => ({ name }));
 
       // connect existing items, create non-existing ones
