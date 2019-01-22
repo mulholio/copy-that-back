@@ -15,11 +15,12 @@ type User {
 type Query {
   users: [User!]!
   thats: [That]!
+  that(where: ThatWhereUniqueInput!): That
 }
 
 type Mutation {
   createUser(username: String!, email: String!, password: String!): User
   # TODO image
-  createThat(title: String!, description: String!, source: String!, tags: [String]!, skills: [String]!, difficulty: Difficulty!, ): That!
+  createThat(title: String!, description: String!, source: String!, tags: [String]!, skills: [String]!, difficulty: Difficulty!, image: String!, largeImage: String!): That!
   # createComment
 }

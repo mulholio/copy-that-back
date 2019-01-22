@@ -473,6 +473,8 @@ type That {
   title: String!
   description: String!
   source: String!
+  image: String!
+  largeImage: String!
   user: User!
   tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag!]
   skills(where: SkillWhereInput, orderBy: SkillOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Skill!]
@@ -489,6 +491,8 @@ input ThatCreateInput {
   title: String!
   description: String!
   source: String!
+  image: String!
+  largeImage: String!
   user: UserCreateOneWithoutThatsInput!
   tags: TagCreateManyWithoutThatsInput
   skills: SkillCreateManyWithoutThatsInput
@@ -514,6 +518,8 @@ input ThatCreateWithoutSkillsInput {
   title: String!
   description: String!
   source: String!
+  image: String!
+  largeImage: String!
   user: UserCreateOneWithoutThatsInput!
   tags: TagCreateManyWithoutThatsInput
   difficulty: Difficulty
@@ -523,6 +529,8 @@ input ThatCreateWithoutTagsInput {
   title: String!
   description: String!
   source: String!
+  image: String!
+  largeImage: String!
   user: UserCreateOneWithoutThatsInput!
   skills: SkillCreateManyWithoutThatsInput
   difficulty: Difficulty
@@ -532,6 +540,8 @@ input ThatCreateWithoutUserInput {
   title: String!
   description: String!
   source: String!
+  image: String!
+  largeImage: String!
   tags: TagCreateManyWithoutThatsInput
   skills: SkillCreateManyWithoutThatsInput
   difficulty: Difficulty
@@ -551,6 +561,10 @@ enum ThatOrderByInput {
   description_DESC
   source_ASC
   source_DESC
+  image_ASC
+  image_DESC
+  largeImage_ASC
+  largeImage_DESC
   difficulty_ASC
   difficulty_DESC
   createdAt_ASC
@@ -564,6 +578,8 @@ type ThatPreviousValues {
   title: String!
   description: String!
   source: String!
+  image: String!
+  largeImage: String!
   difficulty: Difficulty
 }
 
@@ -624,6 +640,34 @@ input ThatScalarWhereInput {
   source_not_starts_with: String
   source_ends_with: String
   source_not_ends_with: String
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
+  largeImage: String
+  largeImage_not: String
+  largeImage_in: [String!]
+  largeImage_not_in: [String!]
+  largeImage_lt: String
+  largeImage_lte: String
+  largeImage_gt: String
+  largeImage_gte: String
+  largeImage_contains: String
+  largeImage_not_contains: String
+  largeImage_starts_with: String
+  largeImage_not_starts_with: String
+  largeImage_ends_with: String
+  largeImage_not_ends_with: String
   difficulty: Difficulty
   difficulty_not: Difficulty
   difficulty_in: [Difficulty!]
@@ -655,6 +699,8 @@ input ThatUpdateInput {
   title: String
   description: String
   source: String
+  image: String
+  largeImage: String
   user: UserUpdateOneRequiredWithoutThatsInput
   tags: TagUpdateManyWithoutThatsInput
   skills: SkillUpdateManyWithoutThatsInput
@@ -665,6 +711,8 @@ input ThatUpdateManyDataInput {
   title: String
   description: String
   source: String
+  image: String
+  largeImage: String
   difficulty: Difficulty
 }
 
@@ -672,6 +720,8 @@ input ThatUpdateManyMutationInput {
   title: String
   description: String
   source: String
+  image: String
+  largeImage: String
   difficulty: Difficulty
 }
 
@@ -717,6 +767,8 @@ input ThatUpdateWithoutSkillsDataInput {
   title: String
   description: String
   source: String
+  image: String
+  largeImage: String
   user: UserUpdateOneRequiredWithoutThatsInput
   tags: TagUpdateManyWithoutThatsInput
   difficulty: Difficulty
@@ -726,6 +778,8 @@ input ThatUpdateWithoutTagsDataInput {
   title: String
   description: String
   source: String
+  image: String
+  largeImage: String
   user: UserUpdateOneRequiredWithoutThatsInput
   skills: SkillUpdateManyWithoutThatsInput
   difficulty: Difficulty
@@ -735,6 +789,8 @@ input ThatUpdateWithoutUserDataInput {
   title: String
   description: String
   source: String
+  image: String
+  largeImage: String
   tags: TagUpdateManyWithoutThatsInput
   skills: SkillUpdateManyWithoutThatsInput
   difficulty: Difficulty
@@ -830,6 +886,34 @@ input ThatWhereInput {
   source_not_starts_with: String
   source_ends_with: String
   source_not_ends_with: String
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
+  largeImage: String
+  largeImage_not: String
+  largeImage_in: [String!]
+  largeImage_not_in: [String!]
+  largeImage_lt: String
+  largeImage_lte: String
+  largeImage_gt: String
+  largeImage_gte: String
+  largeImage_contains: String
+  largeImage_not_contains: String
+  largeImage_starts_with: String
+  largeImage_not_starts_with: String
+  largeImage_ends_with: String
+  largeImage_not_ends_with: String
   user: UserWhereInput
   tags_every: TagWhereInput
   tags_some: TagWhereInput

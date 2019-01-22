@@ -39,12 +39,13 @@ const Mutation = {
           )),
         },
       });
+      console.log('existingItems: ', existingItems);
 
       const existingItemNames: string[] = existingItems
         .map(({ name }) => name);
 
       const isNotInExistingItemNames = name =>
-        !(existingItemNames.findIndex(element => element === name) > 0);
+        (existingItemNames.findIndex(element => element === name) === -1);
 
       const nonExistingItemNames: string[] = args[itemType]
         .filter(isNotInExistingItemNames);
@@ -52,11 +53,7 @@ const Mutation = {
       console.log(`existing ${itemType}s: `, existingItemNames);
       console.log(`non-existing ${itemType}s: `, nonExistingItemNames);
 
-      interface TagNameObject {
-        name: string
-      }
-
-      const nameObjects = (names: string[]): TagNameObject[] =>
+      const nameObjects = (names: string[]): NameJoin[] =>
         names.map(name => ({ name }));
 
       // connect existing items, create non-existing ones
@@ -80,8 +77,9 @@ const Mutation = {
       // this is currently hard coded as the 1 default user
       user: { connect: { id: 'cjpme1kus7api0947y4hl8wcr' } },
     };
-    const res = await ctx.db.mutation.createThat({ data }, info );
-    return res;
+    const that = await ctx.db.mutation.createThat({ data }, info );
+    console.log('that', that);
+    return that;
   },
 };
 

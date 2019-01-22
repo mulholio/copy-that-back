@@ -1,9 +1,8 @@
-#endpoint: ${env:PRISMA_ENDPOINT}
-#endpoint: https://eu1.prisma.sh/copy-that/copy-that-back/
-endpoint: https://eu1.prisma.sh/copy-that/copy_that_back/dev
+# endpoint: ${env:PRISMA_ENDPOINT}
+# This is now using the prod. Use the above variable to use local
+endpoint: https://copy-that-prod-1139d0c314.herokuapp.com/copy-that-back-prod/prod
 datamodel: datamodel.prisma
-# TODO secure this for production
-# secret: ${env:PRISMA_SECRET}
+secret: ${env:PRISMA_SECRET}
 
 generate:
   - generator: typescript-client
