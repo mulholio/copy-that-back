@@ -74,8 +74,12 @@ const Mutation = {
       tags,
       skills,
       // TODO change this to ctx.request.userId later
-      // this is currently hard coded as the 1 default user
-      user: { connect: { id: 'cjpme1kus7api0947y4hl8wcr' } },
+      // this is currently hard coded as the 1 default user (different ids for production and dev)
+      user: {
+        connect: {
+          id: process.env.FRONT_END_URL === 'https://copythat.io' ? 'cjraoo8rd001c0820cvhy0f1j' : 'cjpme1kus7api0947y4hl8wcr',
+        }
+      },
     };
     const that = await ctx.db.mutation.createThat({ data }, info );
     console.log('that', that);
